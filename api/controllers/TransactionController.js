@@ -88,6 +88,20 @@ const TransactionController = {
       if (err) return res.status(500).json({ message: 'Lỗi khi lấy dữ liệu' })
       res.status(200).json(result)
     })
+  },
+  //Hiển thị tổng, thu nhập, chi tiêu của 1 tháng
+  getMonthlySummary: (req, res) => {
+    const user_id = req.user.user_id
+    const {month, year} = req.body
+
+    if (!month || !year) {
+      return res.status(400).json({ message: 'Dữ liệu không hợp lệ'})
+    }
+
+    Transaction.getMonthlySummary(user_id, month, year, (err, result) => {
+      if (err) return res.status(500).json({ message: 'Lỗi khi lấy dữ liệu' })
+      res.status(200).json(result)
+    })
   }
 }
 

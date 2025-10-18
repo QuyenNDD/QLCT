@@ -29,6 +29,10 @@ module.exports = function(app) {
 
   app.route('/transaction/getDailyMonthlyDetail')
     .get(verifyToken, transaction.getDailyMonthlyDetail)
+
+  app.route('/transaction/getMonthlySummary')
+    .get(verifyToken, transaction.getMonthlySummary)
+
   app.route('/getExpenseCategory')
     .get(category.getExpenseCategory)
 

@@ -77,6 +77,24 @@ const Transaction = {
       })
       callback(null, Object.values(detail))
     })
+  },
+  getMonthlySummary: (user_id, month, year, callback) => {
+    const query = `
+      SELECT 
+        SUM(CASE WHEN type = 'income' THEN amount ELSE 0 END) AS income,
+        SUM(CASE WHEN type = 'expense' THEN amount ELSE 0 END) AS expense
+      FROM transactions
+      WHERE user_id = ?
+        AND MONTH(transaction_date) = ?
+        AND YEAR(transaction_date) = ?
+    `
+    db.query(query, [user_id, month, year], (err, result) => {
+      if (err) return callback(err);
+      const income = result[0].income || 0
+      const expense = result[0].expense || 0
+      const total = income - expense
+      callback (null, {month, year, income, expense, total});
+    });
   }
 }
 
