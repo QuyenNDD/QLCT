@@ -33,11 +33,16 @@ module.exports = function(app) {
   app.route('/transaction/getMonthlySummary')
     .get(verifyToken, transaction.getMonthlySummary)
 
+  app.route('/transaction/getMonthlyDetail')
+    .get(verifyToken, transaction.getMonthlyDetail)
+
+  app.route('/transaction/getCategoryMonthlyDetail')
+    .get(verifyToken, transaction.getCategoryMonthlyDetail)
+
   app.route('/getExpenseCategory')
     .get(category.getExpenseCategory)
 
   app.route('/getIncomeCategory')
     .get(category.getIncomeCategory)
-  
   
 };

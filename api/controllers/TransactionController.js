@@ -102,6 +102,33 @@ const TransactionController = {
       if (err) return res.status(500).json({ message: 'Lỗi khi lấy dữ liệu' })
       res.status(200).json(result)
     })
+  },
+  //Hiển thị tổng tiền đã thu/chi cho các danh mục trong 1 tháng
+  getMonthlyDetail: (req, res) => {
+    const user_id = req.user.user_id
+    const {month, year} = req.body
+
+    if (!month || !year) {
+      return res.status(400).json({ message: 'Dữ liệu không hợp lệ'})
+    }
+
+    Transaction.getMonthlyDetail(user_id, month, year, (err, result) => {
+      if (err) return res.status(500).json({ message: 'Lỗi khi lấy dữ liệu' })
+      res.status(200).json(result)
+    })
+  },
+  //Hiển thị chi tiết khoản tiền dành cho danh mục trong tháng 
+  getCategoryMonthlyDetail: (req, res) => {
+    const user_id = req.user.user_id
+    const {month, year, category_id} = req.body
+
+    if (!month || !year || !category_id) {
+      return res.status(400).json({ message: 'Dữ liệu không hợp lệ'})
+    }
+    Transaction.getCategoryMonthlyDetail(user_id, month, year, category_id, (err, result) => {
+      if (err) return res.status(500).json({ message: 'Lỗi khi lấy dữ liệu' })
+      res.status(200).json(result)
+    })
   }
 }
 
