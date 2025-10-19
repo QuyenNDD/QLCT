@@ -129,6 +129,43 @@ const TransactionController = {
       if (err) return res.status(500).json({ message: 'Lỗi khi lấy dữ liệu' })
       res.status(200).json(result)
     })
+  },
+  //Hiển thị tổng thu/chi của 1 năm
+  getYearSummary: (req, res) => {
+    const user_id = req.user.user_id
+    const year = req.params.year
+
+    if (!year) {
+      return res.status(400).json({ message: 'Dữ liệu không hợp lệ'})
+    }
+
+    Transaction.getYearSummary(user_id, year, (err, result) => {
+      if (err) return res.status(500).json({ message: 'Lỗi khi lấy dữ liệu' })
+      res.status(200).json(result)
+    })
+  },
+  //Hiện thị tổng thu/chi của danh mục trong 1 năm
+  getCategoryYear: (req, res) => {
+    const user_id = req.user.user_id
+    const year = req.params.year
+
+    Transaction.getCategoryYear(user_id, year, (err, result) => {
+      if (err) return res.status(500).json({ message: 'Lỗi khi lấy dữ liệu' })
+      res.status(200).json(result)
+    })
+  }, 
+  //Hiển thị tổng tiền đã chi cho 1 danh mục trong 1 tháng trong năm
+  getCategoryMonthlySummary: (req, res) => {
+    const user_id = req.user.user_id
+    const {month, year, category_id} = req.body
+
+    if (!month || !year || !category_id) {
+      return res.status(400).json({ message: 'Dữ liệu không hợp lệ'})
+    }
+    Transaction.getCategoryMonthlySummary(user_id, month, year, category_id, (err, result) => {
+      if (err) return res.status(500).json({ message: 'Lỗi khi lấy dữ liệu' })
+      res.status(200).json(result)
+    })
   }
 }
 

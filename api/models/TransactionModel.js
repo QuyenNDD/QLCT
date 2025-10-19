@@ -150,6 +150,57 @@ const Transaction = {
       })
       callback(null, Object.values(detail))
     })
+  },
+  getYearSummary: (user_id, year, callback) => {
+    const query = `
+      SELECT 
+        SUM(CASE WHEN type = 'income' THEN amount ELSE 0 END) AS income,
+        SUM(CASE WHEN type = 'expense' THEN amount ELSE 0 END) AS expense
+      FROM transactions
+      WHERE user_id = ?
+        AND YEAR(transaction_date) = ?
+    `
+    db.query(query, [user_id, year], (err, result) => {
+      if (err) return callback(err);
+      const income = result[0].income || 0
+      const expense = result[0].expense || 0
+      callback (null, {year, income, expense});
+    })
+  },
+  getCategoryYear: (user_id, year, callback) => {
+    const query = `
+      SELECT 
+        t.category_id,
+        c.name AS category_name,
+        t.type,
+        SUM(t.amount) AS total_amount
+      FROM transactions t
+      JOIN categories c ON t.category_id = c.category_id
+      WHERE t.user_id = ?
+        AND YEAR(t.transaction_date) = ?
+      GROUP BY c.name, t.type, t.category_id
+      ORDER BY t.type, total_amount DESC;
+    `
+    db.query(query, [user_id, year], (err, result) => {
+      if (err) return callback(err);
+      callback(null, result)
+    })
+  },
+  getCategoryMonthlySummary: (user_id, month, year, category_id, callback) => {
+    const query = `
+      SELECT 
+        SUM(t.amount) as total_amount
+      FROM transactions t
+      WHERE t.user_id = ?
+        AND MONTH(t.transaction_date) = ?
+        AND YEAR(t.transaction_date) = ?
+        AND t.category_id = ?
+      ORDER BY t.transaction_date, t.transaction_id;
+    `
+    db.query(query, [user_id, month, year, category_id], (err, result) => {
+      if (err) return callback(err);
+      callback(null, result)
+    })
   }
 }
 
