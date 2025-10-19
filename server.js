@@ -4,8 +4,12 @@ const bodyParser = require('body-parser')
 require('dotenv').config()
 const port = process.env.PORT || 3001
 
+app.use((req, res, next) => {
+  if (req.method === 'GET') return next(); 
+  bodyParser.json()(req, res, next);
+});
+
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json())
 
 let routes = require('./api/routes')
 routes(app)
@@ -15,5 +19,4 @@ app.use(function(req, res) {
 })
 
 app.listen(port)
-
 console.log('RESTful API server started on: ' + port)

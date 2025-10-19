@@ -64,7 +64,7 @@ const TransactionController = {
   // Tổng thu/chi 1 ngày trong tháng (hiển thị lên lịch)
   getDailyMonthlySummary: (req, res) => {
     const user_id = req.user.user_id
-    const {month, year} = req.body
+    const {month, year} = req.query
 
     if (!month || !year){
       return res.status(400).json({ message: 'Dữ liệu không hợp lệ'})
@@ -78,7 +78,7 @@ const TransactionController = {
   // Chi tiết thu/chi 1 ngày trong tháng
   getDailyMonthlyDetail: (req, res) => {
     const user_id = req.user.user_id
-    const {month, year} = req.body
+    const {month, year} = req.query
 
     if (!month || !year){
       return res.status(400).json({ message: 'Dữ liệu không hợp lệ'})
@@ -92,7 +92,7 @@ const TransactionController = {
   //Hiển thị tổng, thu nhập, chi tiêu của 1 tháng
   getMonthlySummary: (req, res) => {
     const user_id = req.user.user_id
-    const {month, year} = req.body
+    const {month, year} = req.query
 
     if (!month || !year) {
       return res.status(400).json({ message: 'Dữ liệu không hợp lệ'})
@@ -106,7 +106,7 @@ const TransactionController = {
   //Hiển thị tổng tiền đã thu/chi cho các danh mục trong 1 tháng
   getMonthlyDetail: (req, res) => {
     const user_id = req.user.user_id
-    const {month, year} = req.body
+    const {month, year} = req.query
 
     if (!month || !year) {
       return res.status(400).json({ message: 'Dữ liệu không hợp lệ'})
@@ -120,7 +120,7 @@ const TransactionController = {
   //Hiển thị chi tiết khoản tiền dành cho danh mục trong tháng 
   getCategoryMonthlyDetail: (req, res) => {
     const user_id = req.user.user_id
-    const {month, year, category_id} = req.body
+    const {month, year, category_id} = req.query
 
     if (!month || !year || !category_id) {
       return res.status(400).json({ message: 'Dữ liệu không hợp lệ'})
@@ -157,7 +157,7 @@ const TransactionController = {
   //Hiển thị tổng tiền đã chi cho 1 danh mục trong 1 tháng trong năm
   getCategoryMonthlySummary: (req, res) => {
     const user_id = req.user.user_id
-    const {month, year, category_id} = req.body
+    const {month, year, category_id} = req.query
 
     if (!month || !year || !category_id) {
       return res.status(400).json({ message: 'Dữ liệu không hợp lệ'})
