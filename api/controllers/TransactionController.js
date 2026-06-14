@@ -1,6 +1,17 @@
 'use strict'
 const Transaction = require('../models/TransactionModel')
 
+function isInvalidAmount(amount) {
+  const numberAmount = Number(amount);
+  return (
+    amount === undefined ||
+    amount === null ||
+    amount === '' ||
+    Number.isNaN(numberAmount) ||
+    numberAmount <= 0
+  );
+}
+
 const TransactionController = {
   //Thêm chi tiêu
   addExpense: (req, res) => {
@@ -9,6 +20,10 @@ const TransactionController = {
 
     if (!category_id || !amount || !transaction_date){
       return res.status(400).json({ message: 'Dữ liệu không hợp lệ'})
+    }
+
+    if (isInvalidAmount(amount)) {
+      return res.status(400).json({ message: 'Số tiền không hợp lệ' })
     }
 
     const newTransaction = { user_id, category_id, amount, description, transaction_date}
@@ -27,6 +42,10 @@ const TransactionController = {
       return res.status(400).json({ message: 'Dữ liệu không hợp lệ'})
     }
 
+    if (isInvalidAmount(amount)) {
+      return res.status(400).json({ message: 'Số tiền không hợp lệ' })
+    }
+    
     const newTransaction = { category_id, amount, description, transaction_date, transaction_id}
 
     Transaction.update(newTransaction, (err, result) => {
@@ -52,6 +71,10 @@ const TransactionController = {
 
     if (!category_id || !amount || !transaction_date){
       return res.status(400).json({ message: 'Dữ liệu không hợp lệ'})
+    }
+
+    if (isInvalidAmount(amount)) {
+      return res.status(400).json({ message: 'Số tiền không hợp lệ' })
     }
 
     const newTransaction = { user_id, category_id, amount, description, transaction_date}
